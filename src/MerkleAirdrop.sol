@@ -23,9 +23,9 @@ contract MerkleAirdrop {
     /*//////////////////////////////////////////////////////////////
                             STORAGE VARS
     //////////////////////////////////////////////////////////////*/
-    
+
     IERC20 private token;
-    
+
     bytes32 private merkleRoot;
 
     mapping(address _claimer => bool _claimed) private hasClaimed;

@@ -40,5 +40,4 @@ contract MerkleAirdropTest is Test {
         uint256 balanceAfter = airdropToken.balanceOf(user);
         assertEq(balanceAfter, balanceBefore + AMOUNT);
     }
-
 }
