@@ -6,7 +6,10 @@ import {Test, console} from "forge-std/Test.sol";
 import {AirdropToken} from "../src/AirdropToken.sol";
 import {MerkleAirdrop} from "../src/MerkleAirdrop.sol";
 
-contract MerkleAirdropTest is Test {
+import {DeployMerkleAirdrop} from "../script/merkle/DeployMerkleAirdrop.s.sol";
+import {ZkSyncChainChecker} from "lib/foundry-devops/src/ZkSyncChainChecker.sol";
+
+contract MerkleAirdropTest is ZkSyncChainChecker, Test {
     MerkleAirdrop public merkleAirdrop;
     AirdropToken public airdropToken;
 
@@ -22,12 +25,19 @@ contract MerkleAirdropTest is Test {
     bytes32[] public PROOF = [proof1, proof2];
 
     function setUp() public {
-        airdropToken = new AirdropToken();
-        merkleAirdrop = new MerkleAirdrop(address(airdropToken), merkleRoot);
 
         (user, privKey) = makeAddrAndKey("user");
 
-        airdropToken.mint(address(merkleAirdrop), AMOUNT);
+        if(!isZkSyncChain()) {
+            //Deploy with script
+            DeployMerkleAirdrop deployMerkleAirdrop = new DeployMerkleAirdrop();
+            (airdropToken, merkleAirdrop) = deployMerkleAirdrop.deployMerkleAirdrop();
+        } else {
+            airdropToken = new AirdropToken();
+            merkleAirdrop = new MerkleAirdrop(address(airdropToken), merkleRoot);
+
+            airdropToken.mint(address(merkleAirdrop), AMOUNT);
+        }
     }
 
     function test_Claim() public {
