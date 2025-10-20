@@ -7,7 +7,6 @@ import {MerkleAirdrop} from "../../src/MerkleAirdrop.sol";
 import {Script} from "forge-std/Script.sol";
 
 contract DeployMerkleAirdrop is Script {
-
     AirdropToken public airdropToken;
     MerkleAirdrop public merkleAirdrop;
 
