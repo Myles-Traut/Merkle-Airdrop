@@ -6,7 +6,6 @@ import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
 import {MerkleAirdrop} from "../../src/MerkleAirdrop.sol";
 
 contract ClaimAirdrop is Script {
-
     address public CLAIMING_ADDRESS = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
     uint256 public AMOUNT_TO_CLAIM = 25 ether;
     bytes32[] public proof = [
@@ -14,7 +13,8 @@ contract ClaimAirdrop is Script {
         bytes32(0xe5ebd1e1b5a5478a944ecab36a9a954ac3b6b8216875f6524caa7a1d87096576)
     ];
 
-    bytes private signature = hex"96c37a9d3dd3ed1e8939ba709577c436903a0d0870fcc1d73993948d023225d175b611ed4cceecade600cc45a41052118eda85990367650ede8de160b88bc2101b";
+    bytes private signature =
+        hex"96c37a9d3dd3ed1e8939ba709577c436903a0d0870fcc1d73993948d023225d175b611ed4cceecade600cc45a41052118eda85990367650ede8de160b88bc2101b";
 
     function claimAirdrop(address _merkleAirdrop) public {
         (uint8 v, bytes32 r, bytes32 s) = splitSignature(signature);
@@ -30,6 +30,7 @@ contract ClaimAirdrop is Script {
         }
         return (v, r, s);
     }
+
     function run() public {
         vm.startBroadcast();
         address mostRecentlyDeployed = DevOpsTools.get_most_recent_deployment("MerkleAirdrop", block.chainid);

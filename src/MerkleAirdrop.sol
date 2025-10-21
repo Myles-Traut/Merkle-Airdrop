@@ -53,9 +53,14 @@ contract MerkleAirdrop is EIP712 {
                     STATE CHANGING FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
-    function claim(address _account, uint256 _amount, bytes32[] calldata _merkleProof, uint8 _v, bytes32 _r, bytes32 _s)
-        external
-    {
+    function claim(
+        address _account,
+        uint256 _amount,
+        bytes32[] calldata _merkleProof,
+        uint8 _v,
+        bytes32 _r,
+        bytes32 _s
+    ) external {
         if (hasClaimed[_account]) {
             revert MerkleAirdrop__AlreadyClaimed();
         }
@@ -83,9 +88,10 @@ contract MerkleAirdrop is EIP712 {
     //////////////////////////////////////////////////////////////*/
 
     function getMessageHash(address _account, uint256 _amount) public view returns (bytes32) {
-        return _hashTypedDataV4(
-            keccak256(abi.encode(MESSAGE_TYPEHASH, AirdropClaim({account: _account, amount: _amount})))
-        );
+        return
+            _hashTypedDataV4(
+                keccak256(abi.encode(MESSAGE_TYPEHASH, AirdropClaim({account: _account, amount: _amount})))
+            );
     }
 
     function getMerkleRoot() external view returns (bytes32) {
